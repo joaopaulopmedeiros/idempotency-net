@@ -39,6 +39,16 @@ public async Task<IActionResult> CreateOrder(CreateOrderRequest request)
 }
 ```
 
+For minimal apis:
+```csharp
+app.MapPost("/orders", async (CreateOrderRequest request, IOrderService service) =>
+{
+    var order = await service.CreateAsync(request);
+    return Results.Ok(order);
+})
+.WithIdempotency();
+```
+
 ## Storage Providers
 
 Idempotency supports multiple persistence providers.
