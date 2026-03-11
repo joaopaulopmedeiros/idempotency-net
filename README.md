@@ -1,6 +1,6 @@
 # Idempotency
 
-[![build](https://github.com/joaopaulopmedeiros/idempotency-dotnet/actions/workflows/build.yml/badge.svg)](https://github.com/joaopaulopmedeiros/idempotency-dotnet/actions/workflows/build.yml)
+[![CI](https://github.com/joaopaulopmedeiros/idempotency-dotnet/actions/workflows/ci.yml/badge.svg)](https://github.com/joaopaulopmedeiros/idempotency-dotnet/actions/workflows/ci.yml)
 
 Idempotency is a lean library for implementing idempotent operations in .NET applications. It ensures safe retries, request deduplication, and consistent execution of APIs, background jobs, and message handlers.
 
@@ -37,8 +37,6 @@ dotnet add package Idempotency.Redis
 ```bash
 dotnet add package Idempotency.PostgreSql
 ```
-
-Other providers are also available (see below).
 
 ## Quick Example
 Clients can provide an idempotency key using the `X-Idempotency-Key` header.  

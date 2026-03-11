@@ -4,7 +4,20 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <PackageId>Idempotency.PostgreSql</PackageId>
+    <Authors>Joao Paulo Medeiros</Authors>
+    <Description>PostgreSQL persistence provider for Idempotency, with table management and advisory lock support.</Description>
+    <PackageTags>idempotency;postgresql;aspnetcore;dotnet;distributed-systems</PackageTags>
+    <RepositoryUrl>https://github.com/joaopaulopmedeiros/idempotency-dotnet</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>https://github.com/joaopaulopmedeiros/idempotency-dotnet</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="/" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Idempotency\Idempotency.csproj" />
