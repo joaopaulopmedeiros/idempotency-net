@@ -2,9 +2,10 @@
 
 [![build](https://github.com/joaopaulopmedeiros/idempotency-dotnet/actions/workflows/build.yml/badge.svg)](https://github.com/joaopaulopmedeiros/idempotency-dotnet/actions/workflows/build.yml)
 
-Idempotency is a lean library for implementing idempotent operations in .NET applications. It ensures safe retries, request deduplication, and consistent execution of APIs, background jobs and message handlers.
+Idempotency is a lean library for implementing idempotent operations in .NET applications. It ensures safe retries, request deduplication, and consistent execution of APIs, background jobs, and message handlers.
 
 It integrates with ASP.NET Core and supports multiple storage providers through a pluggable persistence model, making it suitable for high-reliability and distributed systems.
+
 
 ## Installation
 
@@ -14,13 +15,38 @@ Install the core package:
 dotnet add package Idempotency
 ```
 
-For ASP.NET Core support:
+Install ASP.NET Core integration:
+
 ```bash
 dotnet add package Idempotency.AspNetCore
 ```
 
+Install a persistence provider:
+
+```bash
+dotnet add package Idempotency.InMemory
+```
+
+Other providers are also available (see below).
+
 ## Quick Example
+Clients can provide an idempotency key using the `X-Idempotency-Key` header.  
+Requests with the same key will only be executed once.
+
+```bash
+curl -X POST http://localhost:5000/orders \
+  -H "Content-Type: application/json" \
+  -H "X-Idempotency-Key: 8f3b2c1a-6f41-4a63-b5fa-3e5e0b3c7c21" \
+  -d '{
+        "productId": "123",
+        "quantity": 1
+      }'
+```
+
+If the same request is retried with the same `X-Idempotency-Key`, the previously stored response will be returned instead of executing the operation again.
+
 Register Idempotency in your application:
+
 ```csharp
 builder.Services.AddIdempotency(options =>
 {
@@ -28,7 +54,12 @@ builder.Services.AddIdempotency(options =>
 });
 ```
 
-Use the [Idempotent] attribute to protect operations:
+---
+
+### ASP.NET Core Controllers
+
+Use the `[Idempotent]` attribute to protect operations:
+
 ```csharp
 [Idempotent]
 [HttpPost("/orders")]
@@ -39,7 +70,14 @@ public async Task<IActionResult> CreateOrder(CreateOrderRequest request)
 }
 ```
 
-For minimal apis:
+If the same request is retried with the same idempotency key, the previously stored result is returned instead of executing the operation again.
+
+---
+
+### Minimal APIs
+
+Idempotency can also be applied to Minimal APIs:
+
 ```csharp
 app.MapPost("/orders", async (CreateOrderRequest request, IOrderService service) =>
 {
@@ -52,8 +90,9 @@ app.MapPost("/orders", async (CreateOrderRequest request, IOrderService service)
 ## Storage Providers
 
 Idempotency supports multiple persistence providers.
+
 | Provider   | Package               |
-| ---------- | --------------------- |
-| InMemory   | Idempotency           |
+|------------|-----------------------|
+| InMemory   | Idempotency.InMemory  |
 | Redis      | Idempotency.Redis     |
 | PostgreSQL | Idempotency.Postgres  |
