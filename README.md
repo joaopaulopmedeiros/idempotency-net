@@ -24,7 +24,11 @@ dotnet add package Idempotency.AspNetCore
 Install a persistence provider:
 
 ```bash
-dotnet add package Idempotency.InMemory
+dotnet add package Idempotency.Redis
+```
+
+```bash
+dotnet add package Idempotency.PostgreSql
 ```
 
 Other providers are also available (see below).
@@ -47,11 +51,52 @@ If the same request is retried with the same `X-Idempotency-Key`, the previously
 
 Register Idempotency in your application:
 
+When using provider-specific packages, import the corresponding namespace:
+
 ```csharp
-builder.Services.AddIdempotency(options =>
-{
-    options.UseInMemoryStorage();
-});
+using Idempotency.PostgreSql;
+using Idempotency.Redis;
+```
+
+```csharp
+builder.Services
+    .AddIdempotency(options =>
+    {
+        options.HeaderName = "X-Idempotency-Key";
+        options.Expiration = TimeSpan.FromHours(12);
+    })
+    .UsePostgreSql(options =>
+    {
+        options.ConnectionString = builder.Configuration.GetConnectionString("PostgreSql");
+        options.Schema = "idempotency";
+        options.TableName = "requests";
+        options.EnableAutoCreateTable = true;
+        options.UseAdvisoryLocks = true;
+        options.CommandTimeout = TimeSpan.FromSeconds(15);
+        options.CleanupBatchSize = 2_000;
+    });
+```
+
+Or configure Redis with full control:
+
+```csharp
+builder.Services
+    .AddIdempotency(options =>
+    {
+        options.HeaderName = "X-Idempotency-Key";
+        options.Expiration = TimeSpan.FromMinutes(30);
+    })
+    .UseRedis(options =>
+    {
+        options.ConnectionString = builder.Configuration.GetConnectionString("Redis");
+        options.Configuration = "localhost:6379,allowAdmin=true,ssl=false";
+        options.InstanceName = "idempotency";
+        options.Database = 2;
+        options.KeyPrefix = "orders:";
+        options.ConnectTimeout = TimeSpan.FromSeconds(3);
+        options.SyncTimeout = TimeSpan.FromSeconds(2);
+        options.AbortOnConnectFail = false;
+    });
 ```
 
 ---
@@ -86,13 +131,3 @@ app.MapPost("/orders", async (CreateOrderRequest request, IOrderService service)
 })
 .WithIdempotency();
 ```
-
-## Storage Providers
-
-Idempotency supports multiple persistence providers.
-
-| Provider   | Package               |
-|------------|-----------------------|
-| InMemory   | Idempotency.InMemory  |
-| Redis      | Idempotency.Redis     |
-| PostgreSQL | Idempotency.Postgres  |

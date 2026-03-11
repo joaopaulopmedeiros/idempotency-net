@@ -2,12 +2,13 @@
 using Idempotency.Services;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Idempotency.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddIdempotency(
+    public static IdempotencyBuilder AddIdempotency(
         this IServiceCollection services,
         Action<IdempotencyOptions>? configure = null)
     {
@@ -16,8 +17,8 @@ public static class ServiceCollectionExtensions
         if (configure != null)
             services.Configure(configure);
 
-        services.AddScoped<IdempotencyService>();
+        services.TryAddScoped<IdempotencyService>();
 
-        return services;
+        return new IdempotencyBuilder(services);
     }
 }

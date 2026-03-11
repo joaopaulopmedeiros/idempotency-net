@@ -1,0 +1,25 @@
+using Idempotency.Abstractions;
+using Idempotency.Extensions;
+
+using Microsoft.Extensions.DependencyInjection;
+
+namespace Idempotency.PostgreSql;
+
+public static class PostgreSqlIdempotencyBuilderExtensions
+{
+    public static IdempotencyBuilder UsePostgreSql(
+        this IdempotencyBuilder builder,
+        Action<PostgreSqlIdempotencyOptions>? configure = null)
+    {
+        builder.Services.AddOptions<PostgreSqlIdempotencyOptions>();
+
+        if (configure is not null)
+            builder.Services.Configure(configure);
+
+        builder.Services.AddScoped<PostgreSqlIdempotencyStore>();
+        builder.Services.AddScoped<IdempotencyStore>(serviceProvider =>
+            serviceProvider.GetRequiredService<PostgreSqlIdempotencyStore>());
+
+        return builder;
+    }
+}
