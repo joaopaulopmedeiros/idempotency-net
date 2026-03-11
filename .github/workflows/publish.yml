@@ -1,15 +1,15 @@
-name: ci
+name: publish
 
 on:
   push:
-    branches: [ main ]
     tags: [ "v*" ]
-  pull_request:
-    branches: [ main ]
 
 jobs:
-  ci:
+  publish:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout
@@ -28,7 +28,6 @@ jobs:
         run: dotnet build --configuration Release --no-restore
 
       - name: Pack
-        if: startsWith(github.ref, 'refs/tags/v')
         run: |
           VERSION="${GITHUB_REF_NAME#v}"
           mkdir -p artifacts
@@ -38,7 +37,6 @@ jobs:
           dotnet pack src/Idempotency.PostgreSql/Idempotency.PostgreSql.csproj -c Release --no-build -p:Version="$VERSION" -o artifacts
 
       - name: Push to NuGet
-        if: startsWith(github.ref, 'refs/tags/v')
         run: |
           dotnet nuget push "artifacts/*.nupkg" \
             --source "https://api.nuget.org/v3/index.json" \
