@@ -6,6 +6,13 @@ Idempotency is a lean library for implementing idempotent operations in .NET app
 
 It integrates with ASP.NET Core and supports multiple storage providers through a pluggable persistence model, making it suitable for high-reliability and distributed systems.
 
+## Examples
+
+Runnable examples are available in the `examples` folder:
+
+- `examples/DemoMinimalApi`
+- `examples/DemoControllerApi`
+
 
 ## Installation
 
@@ -58,6 +65,7 @@ using Idempotency.PostgreSql;
 using Idempotency.Redis;
 ```
 
+Configure Postgres
 ```csharp
 builder.Services
     .AddIdempotency(options =>
@@ -77,7 +85,7 @@ builder.Services
     });
 ```
 
-Or configure Redis with full control:
+Or configure Redis:
 
 ```csharp
 builder.Services
@@ -116,6 +124,8 @@ public async Task<IActionResult> CreateOrder(CreateOrderRequest request)
 ```
 
 If the same request is retried with the same idempotency key, the previously stored result is returned instead of executing the operation again.
+
+There is a runnable controller sample in `examples/DemoControllerApi`.
 
 ---
 

@@ -5,4 +5,8 @@
     <Project Path="src/Idempotency.Redis/Idempotency.Redis.csproj" />
     <Project Path="src/Idempotency.PostgreSql/Idempotency.PostgreSql.csproj" />
   </Folder>
+  <Folder Name="/examples/">
+    <Project Path="examples/DemoMinimalApi/DemoMinimalApi.csproj" />
+    <Project Path="examples/DemoControllerApi/DemoControllerApi.csproj" />
+  </Folder>
 </Solution>
