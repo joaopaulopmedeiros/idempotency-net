@@ -105,8 +105,6 @@ builder.Services
     });
 ```
 
----
-
 ### ASP.NET Core Controllers
 
 Use the `[Idempotent]` attribute to protect operations:
@@ -120,12 +118,6 @@ public async Task<IActionResult> CreateOrder(CreateOrderRequest request)
     return Ok(order);
 }
 ```
-
-If the same request is retried with the same idempotency key, the previously stored result is returned instead of executing the operation again.
-
-There is a runnable controller sample in `examples/DemoControllerApi`.
-
----
 
 ### Minimal APIs
 
