@@ -2,11 +2,9 @@
 
 [![build status](https://img.shields.io/github/actions/workflow/status/joaopaulopmedeiros/idempotency-dotnet/build.yml?branch=main)](https://github.com/joaopaulopmedeiros/idempotency-dotnet/actions/workflows/build.yml)
 
-Idempotency is a lean library for implementing idempotent operations in .NET applications.  
+Idempotency is a lean library for implementing idempotent operations in .NET applications. It ensures safe retries, request deduplication, and consistent execution of APIs, background jobs and message handlers.
 
-It ensures safe retries, request deduplication, and consistent execution of APIs, background jobs and message handlers.
-
-Idempotency integrates with ASP.NET Core and supports multiple storage providers through a pluggable persistence model, making it suitable for high-reliability and distributed systems.
+It integrates with ASP.NET Core and supports multiple storage providers through a pluggable persistence model, making it suitable for high-reliability and distributed systems.
 
 ## Installation
 
