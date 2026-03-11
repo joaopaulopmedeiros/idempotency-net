@@ -18,21 +18,21 @@ public static class RouteHandlerBuilderExtensions
     {
         builder.AddEndpointFilter(async (context, next) =>
         {
-            var requestServices = context.HttpContext.RequestServices;
-            var options = requestServices.GetRequiredService<IOptions<IdempotencyOptions>>().Value;
+            IServiceProvider requestServices = context.HttpContext.RequestServices;
+            IdempotencyOptions options = requestServices.GetRequiredService<IOptions<IdempotencyOptions>>().Value;
 
             if (!TryGetIdempotencyKey(context.HttpContext, options, out var key))
                 return await next(context).ConfigureAwait(false);
 
-            var service = requestServices.GetRequiredService<IdempotencyService>();
-            var cancellationToken = context.HttpContext.RequestAborted;
+            IdempotencyService service = requestServices.GetRequiredService<IdempotencyService>();
+            CancellationToken cancellationToken = context.HttpContext.RequestAborted;
 
-            var cached = await service.GetAsync(key, cancellationToken).ConfigureAwait(false);
+            IdempotencyRecord? cached = await service.GetAsync(key, cancellationToken).ConfigureAwait(false);
             if (cached is not null)
                 return new CachedIdempotencyResult(cached);
 
-            var result = await next(context).ConfigureAwait(false);
-            var resultToPersist = ToRecord(key, result, options);
+            object? result = await next(context).ConfigureAwait(false);
+            IdempotencyRecord? resultToPersist = ToRecord(key, result, options);
 
             if (resultToPersist is not null)
                 await service.SaveAsync(resultToPersist, cancellationToken).ConfigureAwait(false);
@@ -50,7 +50,7 @@ public static class RouteHandlerBuilderExtensions
         if (!httpContext.Request.Headers.TryGetValue(options.HeaderName, out var values))
             return false;
 
-        var value = values.ToString().Trim();
+        string value = values.ToString().Trim();
         if (string.IsNullOrWhiteSpace(value))
             return false;
 
@@ -60,8 +60,8 @@ public static class RouteHandlerBuilderExtensions
 
     private static IdempotencyRecord? ToRecord(string key, object? result, IdempotencyOptions options)
     {
-        var createdAt = DateTimeOffset.UtcNow;
-        var expiresAt = createdAt.Add(options.Expiration);
+        DateTimeOffset createdAt = DateTimeOffset.UtcNow;
+        DateTimeOffset expiresAt = createdAt.Add(options.Expiration);
 
         if (result is null)
         {
@@ -89,11 +89,11 @@ public static class RouteHandlerBuilderExtensions
 
         if (result is IValueHttpResult valueResult)
         {
-            var statusCode = result is IStatusCodeHttpResult statusResult && statusResult.StatusCode is not null
+            int statusCode = result is IStatusCodeHttpResult statusResult && statusResult.StatusCode is not null
                 ? statusResult.StatusCode.Value
                 : StatusCodes.Status200OK;
 
-            var contentType = result is IContentTypeHttpResult contentTypeResult
+            string? contentType = result is IContentTypeHttpResult contentTypeResult
                 ? contentTypeResult.ContentType
                 : "application/json; charset=utf-8";
 
@@ -108,21 +108,17 @@ public static class RouteHandlerBuilderExtensions
             };
         }
 
-        if (result is IResult)
-        {
-            // Some result kinds (stream/file/push) are not safely serializable for replay.
-            return null;
-        }
-
-        return new IdempotencyRecord
-        {
-            Key = key,
-            StatusCode = StatusCodes.Status200OK,
-            ResponseBody = JsonSerializer.Serialize(result, SerializerOptions),
-            ContentType = "application/json; charset=utf-8",
-            CreatedAt = createdAt,
-            ExpiresAt = expiresAt,
-        };
+        return result is IResult
+            ? null
+            : new IdempotencyRecord
+            {
+                Key = key,
+                StatusCode = StatusCodes.Status200OK,
+                ResponseBody = JsonSerializer.Serialize(result, SerializerOptions),
+                ContentType = "application/json; charset=utf-8",
+                CreatedAt = createdAt,
+                ExpiresAt = expiresAt,
+            };
     }
 
     private sealed class CachedIdempotencyResult : IResult

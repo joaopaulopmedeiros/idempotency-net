@@ -18,8 +18,8 @@ public sealed class IdempotentAttribute : Attribute, IAsyncActionFilter
 
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
-        var requestServices = context.HttpContext.RequestServices;
-        var options = requestServices.GetRequiredService<IOptions<IdempotencyOptions>>().Value;
+        IServiceProvider requestServices = context.HttpContext.RequestServices;
+        IdempotencyOptions options = requestServices.GetRequiredService<IOptions<IdempotencyOptions>>().Value;
 
         if (!TryGetIdempotencyKey(context.HttpContext, options, out var key))
         {
@@ -27,21 +27,21 @@ public sealed class IdempotentAttribute : Attribute, IAsyncActionFilter
             return;
         }
 
-        var service = requestServices.GetRequiredService<IdempotencyService>();
-        var cancellationToken = context.HttpContext.RequestAborted;
+        IdempotencyService service = requestServices.GetRequiredService<IdempotencyService>();
+        CancellationToken cancellationToken = context.HttpContext.RequestAborted;
 
-        var cached = await service.GetAsync(key, cancellationToken).ConfigureAwait(false);
+        IdempotencyRecord? cached = await service.GetAsync(key, cancellationToken).ConfigureAwait(false);
         if (cached is not null)
         {
             context.Result = ToMvcResult(cached);
             return;
         }
 
-        var executedContext = await next().ConfigureAwait(false);
+        ActionExecutedContext executedContext = await next().ConfigureAwait(false);
         if (executedContext.Exception is not null && !executedContext.ExceptionHandled)
             return;
 
-        var resultToPersist = ToRecord(key, executedContext.Result, options);
+        IdempotencyRecord? resultToPersist = ToRecord(key, executedContext.Result, options);
         if (resultToPersist is null)
             return;
 
@@ -55,7 +55,7 @@ public sealed class IdempotentAttribute : Attribute, IAsyncActionFilter
         if (!httpContext.Request.Headers.TryGetValue(options.HeaderName, out var values))
             return false;
 
-        var value = values.ToString().Trim();
+        string value = values.ToString().Trim();
         if (string.IsNullOrWhiteSpace(value))
             return false;
 
@@ -65,15 +65,14 @@ public sealed class IdempotentAttribute : Attribute, IAsyncActionFilter
 
     private static IActionResult ToMvcResult(IdempotencyRecord cached)
     {
-        if (cached.ResponseBody is null)
-            return new StatusCodeResult(cached.StatusCode);
-
-        return new ContentResult
-        {
-            StatusCode = cached.StatusCode,
-            ContentType = cached.ContentType,
-            Content = cached.ResponseBody,
-        };
+        return cached.ResponseBody is null
+            ? new StatusCodeResult(cached.StatusCode)
+            : new ContentResult
+            {
+                StatusCode = cached.StatusCode,
+                ContentType = cached.ContentType,
+                Content = cached.ResponseBody,
+            };
     }
 
     private static IdempotencyRecord? ToRecord(string key, IActionResult? result, IdempotencyOptions options)
@@ -81,8 +80,8 @@ public sealed class IdempotentAttribute : Attribute, IAsyncActionFilter
         if (result is FileResult)
             return null;
 
-        var createdAt = DateTimeOffset.UtcNow;
-        var expiresAt = createdAt.Add(options.Expiration);
+        DateTimeOffset createdAt = DateTimeOffset.UtcNow;
+        DateTimeOffset expiresAt = createdAt.Add(options.Expiration);
 
         return result switch
         {

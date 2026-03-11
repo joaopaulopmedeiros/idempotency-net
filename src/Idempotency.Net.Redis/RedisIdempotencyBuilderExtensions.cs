@@ -25,7 +25,7 @@ public static class RedisIdempotencyBuilderExtensions
                 .GetRequiredService<Microsoft.Extensions.Options.IOptions<RedisIdempotencyOptions>>()
                 .Value;
 
-            var configuration = options.ConnectionString;
+            string? configuration = options.ConnectionString;
             if (string.IsNullOrWhiteSpace(configuration))
                 configuration = options.Configuration;
 

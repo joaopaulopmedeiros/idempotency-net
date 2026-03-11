@@ -43,22 +43,21 @@ internal sealed class PostgreSqlIdempotencyStore : IdempotencyStore
         if (!await reader.ReadAsync(cancellationToken).ConfigureAwait(false))
             return null;
 
-        var expiresAt = reader.IsDBNull(4)
-            ? (DateTimeOffset?)null
+        DateTimeOffset? expiresAt = reader.IsDBNull(4)
+            ? null
             : reader.GetFieldValue<DateTimeOffset>(4);
 
-        if (expiresAt is not null && expiresAt <= DateTimeOffset.UtcNow)
-            return null;
-
-        return new IdempotencyRecord
-        {
-            Key = key,
-            StatusCode = reader.GetInt32(0),
-            ResponseBody = reader.IsDBNull(1) ? null : reader.GetString(1),
-            ContentType = reader.IsDBNull(2) ? null : reader.GetString(2),
-            CreatedAt = reader.GetFieldValue<DateTimeOffset>(3),
-            ExpiresAt = expiresAt,
-        };
+        return expiresAt is not null && expiresAt <= DateTimeOffset.UtcNow
+            ? null
+            : new IdempotencyRecord
+            {
+                Key = key,
+                StatusCode = reader.GetInt32(0),
+                ResponseBody = reader.IsDBNull(1) ? null : reader.GetString(1),
+                ContentType = reader.IsDBNull(2) ? null : reader.GetString(2),
+                CreatedAt = reader.GetFieldValue<DateTimeOffset>(3),
+                ExpiresAt = expiresAt,
+            };
     }
 
     public async Task SaveAsync(
@@ -123,7 +122,7 @@ internal sealed class PostgreSqlIdempotencyStore : IdempotencyStore
     {
         const string sql = "SELECT pg_advisory_xact_lock(hashtextextended(@key, 0));";
 
-        await using var command = new NpgsqlCommand(sql, connection)
+        await using NpgsqlCommand command = new(sql, connection)
         {
             CommandTimeout = (int)_options.CommandTimeout.TotalSeconds,
         };
@@ -136,7 +135,7 @@ internal sealed class PostgreSqlIdempotencyStore : IdempotencyStore
         NpgsqlConnection connection,
         CancellationToken cancellationToken)
     {
-        var sql = $"""
+        string sql = $"""
             WITH rows AS (
                 SELECT ctid
                 FROM {GetQualifiedTableName()}
@@ -147,7 +146,7 @@ internal sealed class PostgreSqlIdempotencyStore : IdempotencyStore
             WHERE ctid IN (SELECT ctid FROM rows);
             """;
 
-        await using var command = new NpgsqlCommand(sql, connection)
+        await using NpgsqlCommand command = new(sql, connection)
         {
             CommandTimeout = (int)_options.CommandTimeout.TotalSeconds,
         };
@@ -161,7 +160,7 @@ internal sealed class PostgreSqlIdempotencyStore : IdempotencyStore
         if (string.IsNullOrWhiteSpace(_options.ConnectionString))
             throw new InvalidOperationException("PostgreSql connection string is required.");
 
-        var connection = new NpgsqlConnection(_options.ConnectionString);
+        NpgsqlConnection connection = new(_options.ConnectionString);
         await connection.OpenAsync(cancellationToken).ConfigureAwait(false);
         return connection;
     }
@@ -177,11 +176,11 @@ internal sealed class PostgreSqlIdempotencyStore : IdempotencyStore
             if (_tableCreated)
                 return;
 
-            await using var connection = await OpenConnectionAsync(cancellationToken).ConfigureAwait(false);
+            await using NpgsqlConnection connection = await OpenConnectionAsync(cancellationToken).ConfigureAwait(false);
             var quotedSchema = QuoteIdentifier(_options.Schema);
             var quotedTable = QuoteIdentifier(_options.TableName);
 
-            var sql = $"""
+            string sql = $"""
                 CREATE SCHEMA IF NOT EXISTS {quotedSchema};
 
                 CREATE TABLE IF NOT EXISTS {quotedSchema}.{quotedTable} (
@@ -194,7 +193,7 @@ internal sealed class PostgreSqlIdempotencyStore : IdempotencyStore
                 );
                 """;
 
-            await using var command = new NpgsqlCommand(sql, connection)
+            await using NpgsqlCommand command = new(sql, connection)
             {
                 CommandTimeout = (int)_options.CommandTimeout.TotalSeconds,
             };

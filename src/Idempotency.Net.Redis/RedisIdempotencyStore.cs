@@ -27,31 +27,28 @@ internal sealed class RedisIdempotencyStore : IdempotencyStore
         string key,
         CancellationToken cancellationToken = default)
     {
-        var db = _connection.GetDatabase(_options.Database);
-        var payload = await db.StringGetAsync(BuildRedisKey(key)).ConfigureAwait(false);
+        IDatabase db = _connection.GetDatabase(_options.Database);
+        RedisValue payload = await db.StringGetAsync(BuildRedisKey(key)).ConfigureAwait(false);
 
         if (payload.IsNullOrEmpty)
             return null;
 
-        var record = JsonSerializer.Deserialize<IdempotencyRecord>(payload.ToString(), SerializerOptions);
+        IdempotencyRecord? record = JsonSerializer.Deserialize<IdempotencyRecord>(payload.ToString(), SerializerOptions);
 
-        if (record?.ExpiresAt is not null && record.ExpiresAt <= DateTimeOffset.UtcNow)
-            return null;
-
-        return record;
+        return record?.ExpiresAt is not null && record.ExpiresAt <= DateTimeOffset.UtcNow ? null : record;
     }
 
     public async Task SaveAsync(
         IdempotencyRecord record,
         CancellationToken cancellationToken = default)
     {
-        var db = _connection.GetDatabase(_options.Database);
-        var payload = JsonSerializer.Serialize(record, SerializerOptions);
+        IDatabase db = _connection.GetDatabase(_options.Database);
+        string payload = JsonSerializer.Serialize(record, SerializerOptions);
 
         TimeSpan? expiry = null;
         if (record.ExpiresAt is not null)
         {
-            var remainingTtl = record.ExpiresAt.Value - DateTimeOffset.UtcNow;
+            TimeSpan remainingTtl = record.ExpiresAt.Value - DateTimeOffset.UtcNow;
             expiry = remainingTtl > TimeSpan.Zero ? remainingTtl : TimeSpan.Zero;
         }
 
@@ -63,9 +60,8 @@ internal sealed class RedisIdempotencyStore : IdempotencyStore
 
     private string BuildRedisKey(string key)
     {
-        if (string.IsNullOrWhiteSpace(_options.InstanceName))
-            return string.Concat(_options.KeyPrefix, key);
-
-        return string.Concat(_options.InstanceName, ":", _options.KeyPrefix, key);
+        return string.IsNullOrWhiteSpace(_options.InstanceName)
+            ? string.Concat(_options.KeyPrefix, key)
+            : string.Concat(_options.InstanceName, ":", _options.KeyPrefix, key);
     }
 }
