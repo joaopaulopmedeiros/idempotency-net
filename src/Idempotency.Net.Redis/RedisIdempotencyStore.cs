@@ -1,12 +1,12 @@
 using System.Text.Json;
 
-using Idempotency.Abstractions;
+using Idempotency.Net.Abstractions;
 
 using Microsoft.Extensions.Options;
 
 using StackExchange.Redis;
 
-namespace Idempotency.Redis;
+namespace Idempotency.Net.Redis;
 
 internal sealed class RedisIdempotencyStore : IdempotencyStore
 {

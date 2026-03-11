@@ -19,23 +19,23 @@ Runnable examples are available in the `examples` folder:
 Install the core package:
 
 ```bash
-dotnet add package Idempotency
+dotnet add package Idempotency.Net
 ```
 
 Install ASP.NET Core integration:
 
 ```bash
-dotnet add package Idempotency.AspNetCore
+dotnet add package Idempotency.Net.AspNetCore
 ```
 
 Install a persistence provider:
 
 ```bash
-dotnet add package Idempotency.Redis
+dotnet add package Idempotency.Net.Redis
 ```
 
 ```bash
-dotnet add package Idempotency.PostgreSql
+dotnet add package Idempotency.Net.PostgreSql
 ```
 
 ## Quick Example

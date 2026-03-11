@@ -1,15 +1,14 @@
 using System.Text.Json;
 
-using Idempotency.Abstractions;
-using Idempotency.Services;
+using Idempotency.Net.Abstractions;
+using Idempotency.Net.Services;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
-namespace Idempotency.AspNetCore.Extensions;
+namespace Idempotency.Net.AspNetCore.Extensions;
 
 public static class RouteHandlerBuilderExtensions
 {

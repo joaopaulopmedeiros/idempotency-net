@@ -4,7 +4,7 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <PackageId>Idempotency</PackageId>
+    <PackageId>Idempotency.Net</PackageId>
     <Authors>Joao Paulo Medeiros</Authors>
     <Description>Lean primitives and services for implementing idempotent operations in .NET applications.</Description>
     <PackageTags>idempotency;dotnet;retries;distributed-systems</PackageTags>

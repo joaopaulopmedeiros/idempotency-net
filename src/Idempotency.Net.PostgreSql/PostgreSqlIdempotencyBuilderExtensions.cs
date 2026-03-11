@@ -1,9 +1,9 @@
-using Idempotency.Abstractions;
-using Idempotency.Extensions;
+using Idempotency.Net.Abstractions;
+using Idempotency.Net.Extensions;
 
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Idempotency.PostgreSql;
+namespace Idempotency.Net.PostgreSql;
 
 public static class PostgreSqlIdempotencyBuilderExtensions
 {

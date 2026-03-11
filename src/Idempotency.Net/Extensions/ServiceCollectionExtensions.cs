@@ -1,10 +1,11 @@
-﻿using Idempotency.Abstractions;
-using Idempotency.Services;
+﻿using Idempotency.Net.Abstractions;
+using Idempotency.Net.Extensions;
+using Idempotency.Net.Services;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace Idempotency.Extensions;
+namespace Idempotency.Net.Extensions;
 
 public static class ServiceCollectionExtensions
 {

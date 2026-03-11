@@ -1,10 +1,10 @@
-using Idempotency.Abstractions;
+using Idempotency.Net.Abstractions;
 
 using Microsoft.Extensions.Options;
 
 using Npgsql;
 
-namespace Idempotency.PostgreSql;
+namespace Idempotency.Net.PostgreSql;
 
 internal sealed class PostgreSqlIdempotencyStore : IdempotencyStore
 {

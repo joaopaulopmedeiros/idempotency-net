@@ -1,9 +1,9 @@
 <Solution>
   <Folder Name="/src/">
-    <Project Path="src/Idempotency/Idempotency.csproj" />
-    <Project Path="src/Idempotency.AspNetCore/Idempotency.AspNetCore.csproj" />
-    <Project Path="src/Idempotency.Redis/Idempotency.Redis.csproj" />
-    <Project Path="src/Idempotency.PostgreSql/Idempotency.PostgreSql.csproj" />
+    <Project Path="src/Idempotency.Net/Idempotency.Net.csproj" />
+    <Project Path="src/Idempotency.Net.AspNetCore/Idempotency.Net.AspNetCore.csproj" />
+    <Project Path="src/Idempotency.Net.Redis/Idempotency.Net.Redis.csproj" />
+    <Project Path="src/Idempotency.Net.PostgreSql/Idempotency.Net.PostgreSql.csproj" />
   </Folder>
   <Folder Name="/examples/">
     <Project Path="examples/DemoMinimalApi/DemoMinimalApi.csproj" />

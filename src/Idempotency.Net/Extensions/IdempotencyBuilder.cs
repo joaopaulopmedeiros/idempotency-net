@@ -1,8 +1,8 @@
-using Idempotency.Abstractions;
+using Idempotency.Net.Abstractions;
 
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Idempotency.Extensions;
+namespace Idempotency.Net.Extensions;
 
 public sealed class IdempotencyBuilder
 {

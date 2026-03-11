@@ -1,4 +1,4 @@
-namespace Idempotency.PostgreSql;
+namespace Idempotency.Net.PostgreSql;
 
 public sealed class PostgreSqlIdempotencyOptions
 {

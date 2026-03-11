@@ -31,10 +31,10 @@ jobs:
         run: |
           VERSION="${GITHUB_REF_NAME#v}"
           mkdir -p artifacts
-          dotnet pack src/Idempotency/Idempotency.csproj -c Release --no-build -p:Version="$VERSION" -o artifacts
-          dotnet pack src/Idempotency.AspNetCore/Idempotency.AspNetCore.csproj -c Release --no-build -p:Version="$VERSION" -o artifacts
-          dotnet pack src/Idempotency.Redis/Idempotency.Redis.csproj -c Release --no-build -p:Version="$VERSION" -o artifacts
-          dotnet pack src/Idempotency.PostgreSql/Idempotency.PostgreSql.csproj -c Release --no-build -p:Version="$VERSION" -o artifacts
+          dotnet pack src/Idempotency.Net/Idempotency.Net.csproj -c Release --no-build -p:Version="$VERSION" -o artifacts
+          dotnet pack src/Idempotency.Net.AspNetCore/Idempotency.Net.AspNetCore.csproj -c Release --no-build -p:Version="$VERSION" -o artifacts
+          dotnet pack src/Idempotency.Net.Redis/Idempotency.Net.Redis.csproj -c Release --no-build -p:Version="$VERSION" -o artifacts
+          dotnet pack src/Idempotency.Net.PostgreSql/Idempotency.Net.PostgreSql.csproj -c Release --no-build -p:Version="$VERSION" -o artifacts
 
       - name: Push to NuGet
         run: |

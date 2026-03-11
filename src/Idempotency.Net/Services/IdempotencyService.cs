@@ -1,6 +1,6 @@
-﻿using Idempotency.Abstractions;
+﻿using Idempotency.Net.Abstractions;
 
-namespace Idempotency.Services;
+namespace Idempotency.Net.Services;
 
 public class IdempotencyService
 {

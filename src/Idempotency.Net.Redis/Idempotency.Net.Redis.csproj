@@ -4,7 +4,7 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <PackageId>Idempotency.Redis</PackageId>
+    <PackageId>Idempotency.Net.Redis</PackageId>
     <Authors>Joao Paulo Medeiros</Authors>
     <Description>Redis persistence provider for Idempotency, enabling distributed request deduplication.</Description>
     <PackageTags>idempotency;redis;aspnetcore;dotnet;distributed-systems</PackageTags>
@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Idempotency\Idempotency.csproj" />
+    <ProjectReference Include="..\Idempotency.Net\Idempotency.Net.csproj" />
   </ItemGroup>
 
   <ItemGroup>

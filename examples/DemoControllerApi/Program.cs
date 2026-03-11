@@ -1,6 +1,6 @@
-using Idempotency.Extensions;
-using Idempotency.PostgreSql;
-using Idempotency.Redis;
+using Idempotency.Net.Extensions;
+using Idempotency.Net.PostgreSql;
+using Idempotency.Net.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 

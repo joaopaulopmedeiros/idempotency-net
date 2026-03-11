@@ -1,4 +1,4 @@
-﻿namespace Idempotency.Abstractions;
+﻿namespace Idempotency.Net.Abstractions;
 
 public sealed class IdempotencyOptions
 {

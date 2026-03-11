@@ -1,7 +1,7 @@
 using System.Text.Json;
 
-using Idempotency.Abstractions;
-using Idempotency.Services;
+using Idempotency.Net.Abstractions;
+using Idempotency.Net.Services;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
-namespace Idempotency.AspNetCore;
+namespace Idempotency.Net.AspNetCore;
 
 [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class)]
 public sealed class IdempotentAttribute : Attribute, IAsyncActionFilter

@@ -1,12 +1,12 @@
-using Idempotency.Abstractions;
-using Idempotency.Extensions;
+using Idempotency.Net.Abstractions;
+using Idempotency.Net.Extensions;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using StackExchange.Redis;
 
-namespace Idempotency.Redis;
+namespace Idempotency.Net.Redis;
 
 public static class RedisIdempotencyBuilderExtensions
 {

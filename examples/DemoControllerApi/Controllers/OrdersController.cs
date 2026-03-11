@@ -1,4 +1,4 @@
-using Idempotency.AspNetCore;
+using Idempotency.Net.AspNetCore;
 
 using Microsoft.AspNetCore.Mvc;
 

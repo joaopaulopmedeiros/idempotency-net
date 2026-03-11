@@ -1,4 +1,4 @@
-namespace Idempotency.Redis;
+namespace Idempotency.Net.Redis;
 
 public sealed class RedisIdempotencyOptions
 {
