@@ -59,8 +59,8 @@ Register Idempotency in your application:
 When using provider-specific packages, import the corresponding namespace:
 
 ```csharp
-using Idempotency.PostgreSql;
-using Idempotency.Redis;
+using Idempotency.Net.PostgreSql;
+using Idempotency.Net.Redis;
 ```
 
 Configure Postgres
