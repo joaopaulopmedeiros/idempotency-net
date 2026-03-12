@@ -8,7 +8,7 @@ using StackExchange.Redis;
 
 namespace Idempotency.Net.Redis.IntegrationTests;
 
-public sealed class RedisIdempotencyStoreIntegrationTests : IClassFixture<RedisContainerFixture>
+public sealed class RedisIdempotencyStoreTests : IClassFixture<RedisContainerFixture>
 {
     private static readonly TimeSpan DefaultRecordTtl = TimeSpan.FromMinutes(2);
     private static readonly TimeSpan ShortLivedRecordTtl = TimeSpan.FromMilliseconds(750);
@@ -16,7 +16,7 @@ public sealed class RedisIdempotencyStoreIntegrationTests : IClassFixture<RedisC
 
     private readonly RedisContainerFixture _fixture;
 
-    public RedisIdempotencyStoreIntegrationTests(RedisContainerFixture fixture)
+    public RedisIdempotencyStoreTests(RedisContainerFixture fixture)
     {
         _fixture = fixture;
     }
@@ -26,7 +26,7 @@ public sealed class RedisIdempotencyStoreIntegrationTests : IClassFixture<RedisC
     {
         // Arrange
         const int database = 0;
-        string keyPrefix = BuildKeyPrefix("it:save-get");
+        string keyPrefix = BuildKeyPrefix("save-get");
         string requestKey = BuildRequestKey();
 
         await _fixture.FlushDatabaseAsync(database);
@@ -57,7 +57,7 @@ public sealed class RedisIdempotencyStoreIntegrationTests : IClassFixture<RedisC
     {
         // Arrange
         const int database = 1;
-        string keyPrefix = BuildKeyPrefix("it:configuration");
+        string keyPrefix = BuildKeyPrefix("configuration");
         string requestKey = BuildRequestKey();
 
         await _fixture.FlushDatabaseAsync(database);
@@ -88,7 +88,7 @@ public sealed class RedisIdempotencyStoreIntegrationTests : IClassFixture<RedisC
     {
         // Arrange
         const int database = 2;
-        string keyPrefix = BuildKeyPrefix("it:expiration");
+        string keyPrefix = BuildKeyPrefix("expiration");
         string requestKey = BuildRequestKey();
 
         await _fixture.FlushDatabaseAsync(database);
@@ -115,7 +115,7 @@ public sealed class RedisIdempotencyStoreIntegrationTests : IClassFixture<RedisC
     {
         // Arrange
         const int database = 3;
-        string keyPrefix = BuildKeyPrefix("it:keys");
+        string keyPrefix = BuildKeyPrefix("keys");
         string instanceName = $"instance-{Guid.NewGuid():N}";
         string requestKey = BuildRequestKey();
 
