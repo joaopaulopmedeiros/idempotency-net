@@ -6,14 +6,6 @@ Idempotency.Net is a lean library for implementing idempotent operations in .NET
 
 It integrates with ASP.NET Core and supports multiple storage providers through a pluggable persistence model, making it suitable for high-reliability and distributed systems.
 
-## Examples
-
-Runnable examples are available in the `examples` folder:
-
-- `examples/DemoMinimalApi`
-- `examples/DemoControllerApi`
-
-
 ## Installation
 
 Install the core package:
@@ -131,3 +123,10 @@ app.MapPost("/orders", async (CreateOrderRequest request, IOrderService service)
 })
 .WithIdempotency();
 ```
+
+## Examples
+
+Runnable examples are available in the `examples` folder containing more details:
+
+- `examples/DemoMinimalApi`
+- `examples/DemoControllerApi`

@@ -9,4 +9,7 @@
     <Project Path="examples/DemoMinimalApi/DemoMinimalApi.csproj" />
     <Project Path="examples/DemoControllerApi/DemoControllerApi.csproj" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Idempotency.Net.Redis.IntegrationTests/Idempotency.Net.Redis.IntegrationTests.csproj" />
+  </Folder>
 </Solution>

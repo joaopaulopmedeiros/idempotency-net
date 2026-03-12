@@ -19,7 +19,7 @@ public static class RedisIdempotencyBuilderExtensions
         if (configure is not null)
             builder.Services.Configure(configure);
 
-        builder.Services.TryAddSingleton(static serviceProvider =>
+        builder.Services.TryAddSingleton<IConnectionMultiplexer>(static serviceProvider =>
         {
             var options = serviceProvider
                 .GetRequiredService<Microsoft.Extensions.Options.IOptions<RedisIdempotencyOptions>>()
