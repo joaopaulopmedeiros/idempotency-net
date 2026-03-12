@@ -124,7 +124,7 @@ app.MapPost("/orders", async (CreateOrderRequest request, IOrderService service)
 .WithIdempotency();
 ```
 
-## Examples
+## Dig Deeper
 
 Runnable examples are available in the `examples` folder containing more details:
 
