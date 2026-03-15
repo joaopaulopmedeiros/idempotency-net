@@ -8,9 +8,9 @@
     <Authors>Joao Paulo Medeiros</Authors>
     <Description>ASP.NET Core integration for idempotent endpoints with attributes and minimal API filters.</Description>
     <PackageTags>idempotency;aspnetcore;dotnet;api</PackageTags>
-    <RepositoryUrl>https://github.com/joaopaulopmedeiros/idempotency-dotnet</RepositoryUrl>
+    <RepositoryUrl>https://github.com/joaopaulopmedeiros/idempotency-net</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageProjectUrl>https://github.com/joaopaulopmedeiros/idempotency-dotnet</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/joaopaulopmedeiros/idempotency-net</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <IsPackable>true</IsPackable>
   </PropertyGroup>

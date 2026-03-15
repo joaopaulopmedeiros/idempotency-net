@@ -8,9 +8,9 @@
     <Authors>Joao Paulo Medeiros</Authors>
     <Description>Redis persistence provider for Idempotency, enabling distributed request deduplication.</Description>
     <PackageTags>idempotency;redis;aspnetcore;dotnet;distributed-systems</PackageTags>
-    <RepositoryUrl>https://github.com/joaopaulopmedeiros/idempotency-dotnet</RepositoryUrl>
+    <RepositoryUrl>https://github.com/joaopaulopmedeiros/idempotency-net</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageProjectUrl>https://github.com/joaopaulopmedeiros/idempotency-dotnet</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/joaopaulopmedeiros/idempotency-net</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <IsPackable>true</IsPackable>
   </PropertyGroup>

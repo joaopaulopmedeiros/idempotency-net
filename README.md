@@ -1,6 +1,6 @@
 # Idempotency.Net
 
-[![build](https://github.com/joaopaulopmedeiros/idempotency-dotnet/actions/workflows/build.yml/badge.svg)](https://github.com/joaopaulopmedeiros/idempotency-dotnet/actions/workflows/build.yml)
+[![build](https://github.com/joaopaulopmedeiros/idempotency-net/actions/workflows/build.yml/badge.svg)](https://github.com/joaopaulopmedeiros/idempotency-net/actions/workflows/build.yml)
 
 Idempotency.Net is a lean library for implementing idempotent operations in .NET applications. It ensures safe retries, request deduplication, and consistent execution of APIs, background jobs, and message handlers.
 
